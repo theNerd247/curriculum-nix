@@ -1,4 +1,4 @@
-{buildPythonPackage, fetchPypi, django, dj-database-url, whitenoise, gunicorn, twine, psycopg2}:
+{buildPythonPackage, licenses, fetchPypi, django, dj-database-url, whitenoise, gunicorn, twine, psycopg2}:
 
 buildPythonPackage rec {
   version="0.3.1";
@@ -10,10 +10,11 @@ buildPythonPackage rec {
 
   doCheck = false;
 
-  buildInputs = [ django dj-database-url whitenoise gunicorn twine psycopg2 ];
+  propagatedBuildInputs = [ django dj-database-url whitenoise gunicorn twine psycopg2 ];
 
   meta = {
     homepage = "https://github.com/heroku/django-heroku";
     description = "A Django library for Heroku apps.";
+    license = licenses.bsd3;
   };
 }
