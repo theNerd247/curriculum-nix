@@ -9,5 +9,11 @@ in
 
 pkgs.stdenv.mkDerivation {
   name = "django-shell";
-  buildInputs = [startdb djangoenv.buildInputs];
+  buildInputs = [
+    startdb 
+    djangoenv.buildInputs
+    nodePackages.node2nix
+    nodePackages.create-react-app
+    nodePackages.npm
+  ];
 }
