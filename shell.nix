@@ -3,8 +3,9 @@
 with pkgs;
 
 let 
-  djangoenv = callPackage ./djangoenv.nix {}; 
-  startdb = callPackage ./startdb.nix {};
+  djangoenv = callPackage ./djangoenv {}; 
+  startdb = callPackage ./startdb {};
+  nodejsenv = callPackage ./nodejsenv {};
 in
 
 pkgs.stdenv.mkDerivation {
@@ -12,8 +13,6 @@ pkgs.stdenv.mkDerivation {
   buildInputs = [
     startdb 
     djangoenv.buildInputs
-    nodePackages.node2nix
-    nodePackages.create-react-app
-    nodePackages.npm
+    nodejsenv.buildInputs
   ];
 }
