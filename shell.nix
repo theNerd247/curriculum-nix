@@ -3,20 +3,21 @@ let
   {
     packageOverrides = pkgs:
       let
-        makeLessonShell = drv: pkgs.mkShell 
+        makeLessonShell = name: drv: pkgs.mkShell 
           { buildInputs = [ drv ] ++ drv.buildInputs;
             shellHook = ''
-              mkdir -p ${drv.name}
-              tar -C ${drv.name} -zxf ${drv}/*.tar.gz 
+              mkdir -p ${name}
+              tar -C ${name} -zxf ${drv}/*.tar.gz 
             '';
           };
       in
-      rec {
-        djangoenv = pkgs.callPackage ./djangoenv {}; 
-        startdb = pkgs.callPackage ./startdb {};
-        nodejsenv = pkgs.callPackage ./nodejsenv {};
-        lessonClone = pkgs.callPackage ./lessonClone {};
-        test = makeLessonShell (pkgs.callPackage ./test-lesson {});
+      {
+        generalAssembly = rec {
+          packages = pkgs.callPackage ./packages {};
+          environments = pkgs.callPackage ./environments { inherit packages; };
+          lessons = pkgs.callPackage ./lessons { inherit environments; };
+          shell = pkgs.lib.attrsets.mapAttrs makeLessonShell lessons;
+        };
       };
   };
 in
