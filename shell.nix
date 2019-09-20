@@ -1,18 +1,15 @@
-{ pkgs ? import <nixpkgs> {}}:
-
-with pkgs;
-
 let 
-  djangoenv = callPackage ./djangoenv {}; 
-  startdb = callPackage ./startdb {};
-  nodejsenv = callPackage ./nodejsenv {};
+  config =
+  {
+    packageOverrides = pkgs:
+    {
+      djangoenv = pkgs.callPackage ./djangoenv {}; 
+      startdb   = pkgs.callPackage ./startdb {};
+      nodejsenv = pkgs.callPackage ./nodejsenv {};
+    };
+  };
+
+  pkgs = import <nixpkgs> { inherit config; };
 in
 
-pkgs.stdenv.mkDerivation {
-  name = "django-shell";
-  buildInputs = [
-    startdb 
-    djangoenv.buildInputs
-    nodejsenv.buildInputs
-  ];
-}
+pkgs.callPackage ./. {}
