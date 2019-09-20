@@ -1,4 +1,4 @@
-{stdenv, python36, postgresql}:
+{stdenv, startdb, python36, postgresql}:
 
 let 
   py = python36.withPackages (ps: 
@@ -17,5 +17,5 @@ in
 
 stdenv.mkDerivation {
   name = "djangoenv";
-  buildInputs = [py postgresql];
+  buildInputs = [py postgresql startdb];
 }
