@@ -4,10 +4,10 @@ let
     packageOverrides = pkgs:
       let
         makeLessonShell = drv: pkgs.mkShell 
-          { buildInputs = [ drv ];
+          { buildInputs = [ drv ] ++ drv.buildInputs;
             shellHook = ''
-              mkdir ${drv.name}
-              tar -C ${drv.name} -zxvf ${drv}/*.tar.gz 
+              mkdir -p ${drv.name}
+              tar -C ${drv.name} -zxf ${drv}/*.tar.gz 
             '';
           };
       in
@@ -15,9 +15,8 @@ let
         djangoenv = pkgs.callPackage ./djangoenv {}; 
         startdb = pkgs.callPackage ./startdb {};
         nodejsenv = pkgs.callPackage ./nodejsenv {};
-        django-intro-exercise = pkgs.callPackage ./test-lesson {};
         lessonClone = pkgs.callPackage ./lessonClone {};
-        test = makeLessonShell django-intro-exercise;
+        test = makeLessonShell (pkgs.callPackage ./test-lesson {});
       };
   };
 in
