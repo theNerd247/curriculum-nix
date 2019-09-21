@@ -1,3 +1,3 @@
 {callPackage, environments}:
 
-callPackage ./out { callPackage = callPackage; inherit environments; }
+callPackage ./out { inherit environments; inherit callPackage; }
