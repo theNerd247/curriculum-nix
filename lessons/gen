@@ -1,7 +1,9 @@
 #!/usr/bin/env fish
 
 set repopath ~/src/org/generalassembly/sei-curriculum/course-material
+set defnix out/default.nix
 
+rm -rf ./out
 mkdir -p ./out
 
 function makeNix
@@ -15,14 +17,22 @@ rec {
   buildInputs = [
   ];
   installPhase = ''
-    mkdir -p $out
-    tar -vczf $out/\${name}.tar.gz ./*
+    mkdir -p \$out
+    tar -vczf \$out/\${name}.tar.gz ./*
   '';
 }  
 " > out/$argv[1].nix
+
+echo "  $argv[1] = callPackage ./$argv[1].nix { };" >> $defnix
 end
+
+echo "{callPackage, ...}:\
+
+{" > $defnix
 
 ls ~/src/org/generalassembly/sei-curriculum/course-material\
   | find $repopath -type d -maxdepth 1\
 	| xargs -L 1 basename\
   | while read -l d; makeNix $d; end
+
+echo "}" >> $defnix

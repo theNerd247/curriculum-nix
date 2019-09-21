@@ -1,7 +1,3 @@
 {callPackage, environments}:
 
-{ test = callPackage ./test-lesson 
-    { 
-      inherit (environments) djangoenv;
-    };
-}
+callPackage ./out { callPackage = callPackage; inherit environments; }
