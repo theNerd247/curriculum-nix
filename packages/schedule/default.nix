@@ -6,6 +6,8 @@ stdenv.mkDerivation
   src = ~/src/org/generalassembly/sei-curriculum/schedule/
   installPhase = ''
     mkdir -p $out/bin
-    cp -r bin/*.ics
+    mv -r bin/*.ics $out/bin
+    mv -r bin/*.md $out/bin
+    mv view bin/
   '';
 }
